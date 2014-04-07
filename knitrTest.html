@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>IE 330 Logistic Regression </title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body style="font-size: 12px;">
+<h1>IE 330 Logistic Regression </h1>
+
+<h1>&copy; Seifu Chonde</h1>
+
+<p><strong><em>Binary Logistic Regression</em></strong> is a special type of regression where <em><em>binary response variable</em></em> is related to a <em><em>set of explanatory variables</em></em>, which can be discrete and/or continuous. </p>
+
+<p>The important point here to note is that in linear regression, the expected values of the response variable are modeled based on combination of values taken by the predictors. In logistic regression <strong>Probability</strong> or <strong>Odds</strong> of the response taking a particular value is modeled based on combination of values taken by the predictors. Like regression , we make an explicit distinction between a response variable and one or more predictor (explanatory) variables.</p>
+
+<p>Logistic regression is applicable, for example, if:</p>
+
+<ul>
+<li>we want to model the probabilities of a response variable as a function of some explanatory variables, e.g. &ldquo;success&rdquo; of admission as a function of gender.</li>
+<li>we want to perform descriptive discriminate analyses such as describing the differences between individuals in separate groups as a function of explanatory variables, e.g. student admitted and rejected as a function of gender</li>
+<li>we want to predict probabilities that individuals fall into two categories of the binary response as a function of some explanatory variables, e.g. what is the probability that a student is admitted given she is a female</li>
+<li>we want to classify individuals into two categories based on explanatory variables, e.g. classify new students into &ldquo;admitted&rdquo; or &ldquo;rejected&rdquo; group depending on their gender.</li>
+</ul>
+
+<p>These ideas boil down to when the response variable is nominal, ordinal or binary we use Logistic Regression. Examples of these variables are grouped variables like Age or Yes/No responses from the course project.</p>
+
+<p>Recall simple linear regression:</p>
+
+<ul>
+<li>Objective: model the expected value of a continuous variable, Y, as a linear function of the continuous predictor, X, \( E(Yi) = \beta_0 + \beta_1x_i \)</li>
+<li>Model structure: \( Y_i = \beta_0 + \beta_1x_i + e_i \)</li>
+<li>Model assumptions: Y is iid as normal, errors are normally distributed, \( e_i \sim N(0, \sigma^2) \), and independent, and X is fixed, and constant variance ??2.</li>
+<li>Parameter estimates and interpretation: \( \hat{\beta}_0 \) is estimate of \( \beta_0 \) or the intercept, and \( \hat{\beta}_1 \) is estimate of the slope, etc&hellip; Do you recall, what is the interpretation of the intercept and the slope?</li>
+<li>Model fit: \( R^2 \), residual analysis, F-statistic</li>
+</ul>
+
+<p>Now lets consider binary logistic regression:</p>
+
+<ul>
+<li>Objective: model the log odds of probability of &ldquo;success&rdquo; as a fuction of explanatory variable(s)</li>
+<li>Model structure: \( log(\frac{\pi}{(1-\pi)})=\beta_0 + \beta_1 x_1 + ... +\beta_k x_k \)</li>
+<li>Model assumptions: Y is iid as exponential (binomial, Poisson, multinomial, normal, etc), errors are independent but NOT necessarily normal, uses Maximum Likelihood Estimation vice OLS (large-sample size required), heuristic rule that not more than 20% of counts can have less than 5 (see example)</li>
+<li>Parameter estimates and interpretation: \( \hat{\beta}_0 \) is estimate of probability of a success when all variables are at their &ldquo;zero&rdquo;&ldquo; level, \( \hat{\beta}_i \) is estimate of association between probability of a success and variable \( x_i \) at a &quot;non-zero&rdquo;&ldquo; level.</li>
+<li>Model fit: not covered in this class</li>
+</ul>
+
+<p>Now let&#39;s consider our first example of logistic regression. Below are data on the relationship between the proportion of male turtles and incubation temperature for eggs from New Mexico. We are interested in determining if there exists a significant relationship between the sex of the turtle and the incubation temperature. </p>
+
+<pre><code class="r"># A simple example of logistic regression
+
+# Our first step is to input the data into columns
+temp &lt;- c(27.2, 28.3, 29.9)
+male &lt;- c(0, 8, 8)
+female &lt;- c(10, 4, 2)
+
+# Now we make a dataframe of our columns
+example.data &lt;- as.data.frame(cbind(temp, male, female))
+
+# This can be visualized as
+example.data
+</code></pre>
+
+<pre><code>##   temp male female
+## 1 27.2    0     10
+## 2 28.3    8      4
+## 3 29.9    8      2
+</code></pre>
+
+<pre><code class="r">summary(example.data)
+</code></pre>
+
+<pre><code>##       temp           male          female     
+##  Min.   :27.2   Min.   :0.00   Min.   : 2.00  
+##  1st Qu.:27.8   1st Qu.:4.00   1st Qu.: 3.00  
+##  Median :28.3   Median :8.00   Median : 4.00  
+##  Mean   :28.5   Mean   :5.33   Mean   : 5.33  
+##  3rd Qu.:29.1   3rd Qu.:8.00   3rd Qu.: 7.00  
+##  Max.   :29.9   Max.   :8.00   Max.   :10.00
+</code></pre>
+
+<p>To run the binary logistic regression here we make use of the glm command from R. The glm command takes a matrix of success/failures and regresses it on a set of variables. Additionally, one may specify the data and the type of glm (logistic regression is in the binomial family).</p>
+
+<pre><code class="r"># General Linear Model -- Logistic Regression Syntax glm (
+# cbind(successColumn, failureColumn) ~ variable1 + ... + variableN, data =
+# data.source, family = binomial)
+
+# Using our data and saving the model to the variable my.log.regression:
+my.log.regression &lt;- glm(cbind(male, female) ~ temp, data = example.data, family = binomial)
+
+# print the regression model
+my.log.regression
+</code></pre>
+
+<pre><code>## 
+## Call:  glm(formula = cbind(male, female) ~ temp, family = binomial, 
+##     data = example.data)
+## 
+## Coefficients:
+## (Intercept)         temp  
+##      -41.74         1.47  
+## 
+## Degrees of Freedom: 2 Total (i.e. Null);  1 Residual
+## Null Deviance:       19.1 
+## Residual Deviance: 6.08  AIC: 15.3
+</code></pre>
+
+<pre><code class="r">
+# print a summary of the regression model indicating our statistically
+# significant predictors
+summary(my.log.regression)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## glm(formula = cbind(male, female) ~ temp, family = binomial, 
+##     data = example.data)
+## 
+## Deviance Residuals: 
+##      1       2       3  
+## -1.774   1.428  -0.944  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)   
+## (Intercept)  -41.742     14.520   -2.87   0.0040 **
+## temp           1.470      0.513    2.87   0.0041 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 19.0770  on 2  degrees of freedom
+## Residual deviance:  6.0787  on 1  degrees of freedom
+## AIC: 15.34
+## 
+## Number of Fisher Scoring iterations: 5
+</code></pre>
+
+<p>This tells us that our regression model is:
+\( log(\frac{P(male)}{Prob(female)}) = -41.74 + 1.47 * temp \) <br>
+As we see from the double stars (or from the p-values) our intercept and temperature are statistically significant predictors of the probability (odds) of a turtle being a male.</p>
+
+<p>Now let&#39;s plot what this is looking like:</p>
+
+<pre><code class="r"># plot temeprature vs. the probability of having a male
+plot(temp, male/(male + female), xlab = &quot;Temperature&quot;, ylab = &quot;Probability of Male&quot;, 
+    ylim = c(0, 1))
+
+# add the logistic regression curve to previous plot
+curve(predict(my.log.regression, data.frame(temp = x), type = &quot;resp&quot;), add = TRUE)
+
+# add points of data to logistic regression to previous plot
+points(temp, fitted(my.log.regression), pch = 20)
+</code></pre>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAGwCAMAAABy/YdMAAAAe1BMVEX9/v0AAAAAADkAAGUAOTkAOWUAOY8AZrU5AAA5ADk5AGU5OWU5OY85j485j7U5j9plAABlADllAGVlOQBlZjlltf2POQCPOTmPOWWPjzmPj2WP2/21ZgC124+1/rW1/v3ajzna24/a/rXa/v39tWX924/9/rX9/tr9/v0RzsX9AAAAKXRSTlP/////////////////////////////////////////////////////AFL0IIcAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAyMSURBVHic7Z0NWxu5FUbXpA00TYvD1tDWbvEWf8z//4UdzRgM+APNSCPp6j3nSQIbL8rVHF9JI4+k3xqQ5LfcAUAeEC8K4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhREC9KiPgZlMyE4gN+FqYG8aIgXpRg8du7rsf49jy0aMhKqPj946L7uvn+MrBoyEqo+N3D84ev/kVDVsh4UYL7+N2cPt4ijOpFQbwoscS/G9x5TgpCVsh4URAvCuJFQbwowTN388NI7vRGHvElE5zx+8f7cUVDVsKb+t2v5aiiISv08aIgXhTEi4J4URAvCuJFQbwoiBcF8aIgXhTEi4J4URAvCuJFQbwoiBcF8aIgXoTP61sQr8HJyibEa4B4QTrpNPVaXFy8iviaubJiGfH1cnWhOuIr5av9CRBfIT67UiC+Mny3IkF8RQzZfwbxtTBw0yHE18HgraYQXwFjdhhDvHVG7iuHeNOM300Q8YYJ2UMS8VYJ3DoU8SYJ3zAW8QaJsU0w4q0RaXdoxJsi3p7giDdEzJ3gg8Vv72a3a44mSUDcAwBCxe+fls36tvX/k8OIpiT6uQ/Bmxg/PDfre44fm5YJTvsg48tnkkNeYvTx9/TxEzLR2T6M6osm4u0bK2nMEHNAN2s+CYklnuPHYhP/7m0S8Rf+LRjJFHdviC+eKW7fYvfx7aieQ4Ujk+LKBd/Hc4x4bNIMjmLM3L3/6l80nCXVmJiML4p0t0LBffzhxEH6+AikvANmVF8MaSc+EF8Gyee7EF8AOWY5EZ+dPHPbiM9NpsuE+Lxk+ygL8VnJd40Qn5OMlwjx+cj6xALic5H5QRXE5yH780mIz0F27YjPQQHaEZ+eIrQjPjWFaEd8WorRjviUFKQd8Qkp63ogPhFFpXuD+FQUdzEQn4LS0r1BfAoK1I74BJR5HRA/MUWme4P4qSn2IiB+SkpN98ZX/P5x9v1/v5ZRixag5CvgJX7/eL/9+XJmXWRI0QUxzYKGgtO98RS/e3huxZ9ZCR1SdDmcbBMSpdDCqz8g49e1ZvwU4ouvvHcfP5sN9F5+3V+JL770dG8Y1XfE7uMt1Bzx0TGQ7o2X+MOeF2d3vQgoulJsaCfjY2Om0oiPiZV0b3zFr2nqfbBUY78JnF/LzW13HkHEouvDVIV9Z+76XzGLrg1DzbzDb+buadn+2v5A/GWs1davj2+db2az+6hFV4WxdG8ijOq3dws3oXtmPtfctRiPwaqGind72a4W2qdQ2Uv3Jlx8O+JzJ5AJ715tUruX+O6juYv38W26b9rOf3N6r2fzggzFai19Mn59dVy36t4UZ+7xrV6SIRhN98a7qXdTdwMH9QriDVdxQB+/Ysr2E5Zr6CneteeLa/+j4Llztivo2cdflT6uaOsYr17wqH500baxne5NlJk7wTNpzGuPM3PnkDqFqoaaRZi5+/DVv2i7VFExn4ctr30OL5jxddTLS/x/r6iXO3eukmr5NPUrRvVvVDCs6/F99Cp+0Sapp048Xj2AatK9YdHkAGrS7r9Muv2z2mXSfmhV530fL/14dV3p3pDxntRUlx76eB8qqsorjOq/prpm3oH4L6mlHh9B/FdUUo3PIP46VTbzDsRfpYY6nMfvPn4+cGm8T9EWqKAKl/DM+M1sdjNwK1v7V63aZt7h39S7e/lBD9tav2zW47+Op/jtncv4YZO2ti9c1eneePfxQ2ftPIouG9PB+8CHNGexHLsfQ3a2lPmQpvZm3sGjV6eYDXwITOCcYDXuYfg9Xn3xEeqAogtFoZl3kPEfMRn0GBD/HpV0b4aN6mtv6oW0k/HvsBZvGIg/IJXuDaP6jla6nWAjQcb3uzXljiE5iEf8Od4/Vz/0KRwzF1PROytp7MQZFz6WNRJmbPya+lWX8VUeRmQjyviIz9wp9u490qN6Xe3a4osPcEr8xNd40qRyuje+o/oKT5osO7rp8b2du37S5NmzCIu+tEUHlwK/CZzLJ01eGfIXfG3Fm3mHXx9/5aTJ3bxVbizjy40sHRFG9bv59z8siSfdHVFu57Z35wb8ZV5ftPeofTpXZFA50Pp0jnR/I9ancyaOHysvonwofTpXXEA5Efp0rrR48hI8qjdz/Fhh4eQmVLyVw4gKHHHkZcDt3NlBvY3jx9B+QujtnImMLyeScgi+nSv/+DHS/Rz1T+AUEkZphPbx44tOA+l+gbqfuUP7Rare9Sp/BOXi+wRO/KInh3S/hl/GW1wfj/ar1NrHk+5fUKd4tH+Jj3j3Ocygneq9ip4QtH+Nh3g3K3v2MdqwoqcD7x54bX70PGpcn+v6490HX/GPw9v6PALo3v2oTDzafanr0Su0e1PT7RzpPoCKxKN9CNWIJ92HUYl4tA+lCvFoH04F4tE+Bvvi0T4K6+JJ95EYF4/2sdgWj/fRWBZPMx+AXfFoD8KqeLQHYlM82oOxKB7tEbAnHu1RsCYe7ZGwJR7t0bAkHu0RsSMe7VGxIh7tkbEhHu3RsSAe7RNgQDzap6B48aT7NBQuHu1TESx+eze7WU60pSnapyNUvFtN6fY/nEA82qckVHwvfHUbXTzapyVGxres/3S6ZUaIObRPTXAfv5t35xCuY540ifbpKXBUj/YUFCce7WmIJT7S8WNoT0VRGY/2dBQkHu0piTFzF+NokhIPpqyaSPfxgYcRYT05cWbuwubq0Z6B/BmP9ixEmLkL6ePp2nORc1SP9YzkE4/1rGQST7LnJot4rOcng3i0l0Bq8bTxhZBMvBOO9XJIJX7s57QwESnFB5QFsUna1EM5FPR5PKQE8aIgXhTEi4J4URAvCuJFQbwoiBcF8aIgXhTEi4J4URAvCuJFQbwoiBcF8aIgXhTEi4J4URAvCuJFQbwoiBcF8aIgXhTEi4J4URAvCuJFKWX3akhM/r1sIQsl7F4NGSDjRcm8ezXkIuHmR7wRSiLZdmdf/1uQkljivzp3DvGFQcaLQh8vCjN3onAfLwozd6KQ8aIwcycKn8eLgnhREC/KlOKhZKYTP55IbQXFjC8G8aLFIF60GMSLFoN40WIQL1oM4kWLySMesoN4URAvCuJFQbwoiBcF8aIgXhTEi4J4URKKd0tyFs26ezqke2TbfXvm4V2vYtyXw8/u5rPTR7+HF1NDNJv+h44xXI4mnfjdr2Wz/cuyi68PZrUYX4z7su6KcQ/+r2+DiwmLZr6IEs1bMeOi2f54dv/4MYYr0aQTv3EBdPVx1XRRPS3HF7P9+XJY3OP+dDUOLCY8mq5W4dF0xYyLxtH+48cYrkSTto/va3V4D3YrNca8sV0xx1Q9Xq2gYoKiOcYQFM2798/oaNqL6xVNUvH7x/vmLeG7dn/UO7sr5q33cv3GqEv9sZigaLo2+mYZGs2xmLHRbO/aHz/GcCWalOJ3c+f94yq8EX1ZV4y7Mptu9DM2xz4VExSNG5X9/Skk4z8VMzYa//Yn6ai+r8jq/t1fDq9cX8zxvTyuVz0pJiiapmmCRhwnxYyMpv+pwvr417q9tWDuou//OfQaHYo5pqprI4ePo0+KCYqmGyocxtEB0RyLGRfN4W18jOFKNOnEv97AHxohd+cxm90MbhRfi9l0P+yKGXXnfFpMaDRtDDGiORQzKprXn+pjuB4NM3eiIF4UxIuCeFEQLwriRUG8KIgXBfGiIF4UxIuCeFEQLwriRUG8KIgXBfGiIF4UxIuCeFE0xO8fu6cZhzwFOeIZaVNoiG+Gi0R8JRxWGMzdOuL9079ns/tN+7vZPfzr9Ynk9oXtX3//9twtWXb//Z8f3XKE7i/71ytCTPzqvl9HfNts7267laXz7y9uRUX/glvY0C1ZbnV3v7rv3GqH1Zh1EiWjJd5J3T08u8U87rdbLjtfuG8PL7y27/23r+LdwoT+9cx1iImYeLf6+Gb5Xrxb17NaHF44NAtuX4lP4vvXc1ciImLi+6T9JN5lfP9C73jxqal3f1lVtju0xLuuevP95UNTf9utNexfOKh2ayld/+/WMH7r2//+9dyViIiY+LbJvll+zPh/vI7qD4sn3crDP/++2D9+e26/+9uh4+9frwgZ8RcYt21JBSAe8aAE4kVBvCiIFwXxoiBeFMSLgnhREC8K4kVBvCiIFwXxoiBeFMSLgnhR/g/5/yaBWVL1aAAAAABJRU5ErkJggg==" alt="plot of chunk unnamed-chunk-3"/> </p>
+
+<p>Finally, let&#39;s do some predictions</p>
+
+<ol>
+<li>At what temperature do you expect a 50:50 split of males and females?</li>
+<li>What is the probability that a male hatches from an incubated egg at 27?</li>
+</ol>
+
+<pre><code class="r"># Answer to Question 1 log(0.5/0.5) = -41.74 + 1.47*temp temp = 28.4
+(log(0.5/0.5) + 41.74)/1.47
+</code></pre>
+
+<pre><code>## [1] 28.39
+</code></pre>
+
+<pre><code class="r">
+
+# Answer to Question 2 log(P(male)/(1-P(male))) = -41.74 + 1.47*(27) this is
+# equivalent to the following with some rounding errors P(male) = exp(-41.74
+# + 1.47*27) / ( 1 + exp(-41.74 + 1.47*27) )
+exp(-41.74 + 1.47 * 27)/(1 + exp(-41.74 + 1.47 * 27))
+</code></pre>
+
+<pre><code>## [1] 0.1141
+</code></pre>
+
+<pre><code class="r"># also this can be more accurately calculated from
+odds &lt;- exp(predict(my.log.regression, data.frame(temp = 27)))
+odds/(1 + odds)
+</code></pre>
+
+<pre><code>##      1 
+## 0.1127
+</code></pre>
+
+</body>
+
+</html>
+
